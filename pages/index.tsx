@@ -8,7 +8,7 @@ export default function TopPage({ slug }: { slug: string }) {
     if (slug) {
       router.replace(`/article/${slug}`);
     }
-  }, [router]);
+  }, [slug, router]);
   return <></>;
 }
 
