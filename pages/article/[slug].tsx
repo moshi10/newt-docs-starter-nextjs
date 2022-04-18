@@ -51,7 +51,7 @@ export default function ArticlePage({
       }).slice(0, 200);
     }
     return "";
-  }, [app, meta, currentArticle?.body]);
+  }, [meta, currentArticle?.body]);
 
   const ogImage = useMemo(() => {
     if (meta?.ogImage?.src) {
