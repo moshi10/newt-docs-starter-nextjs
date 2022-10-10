@@ -67,7 +67,7 @@ export const fetchArticles = async (options?: {
       depth: 2,
       limit: _limit,
       order: ["sortOrder"],
-      select: ["title", "category", "slug", "body"],
+      select: ["title", "category", "slug", "body", "_id"],
       ..._query,
     },
   });
