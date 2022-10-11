@@ -18,7 +18,7 @@ export function Navigation({
   const router = useRouter();
   const { q } = router.query;
 
-  const [searchText, setSearchText] = useState(q);
+  const [searchText, setSearchText] = useState(q || "");
   useEffect(() => {
     if (q) {
       setSearchText(q);
