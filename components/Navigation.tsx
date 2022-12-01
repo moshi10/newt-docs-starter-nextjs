@@ -1,38 +1,38 @@
-import styles from "../styles/Navigation.module.css";
-import { Content } from "newt-client-js";
-import { Article } from "../types/article";
-import { Category } from "../types/category";
-import { useCallback, useEffect, useState } from "react";
-import Link from "next/link";
-import { useRouter } from "next/router";
+import styles from '../styles/Navigation.module.css'
+import { Content } from 'newt-client-js'
+import { Article } from '../types/article'
+import { Category } from '../types/category'
+import { useCallback, useEffect, useState } from 'react'
+import Link from 'next/link'
+import { useRouter } from 'next/router'
 
 export function Navigation({
   categories,
   articles,
   current,
 }: {
-  categories: (Content & Category)[];
-  articles: (Content & Article)[];
-  current?: (Content & Article) | null;
+  categories: (Content & Category)[]
+  articles: (Content & Article)[]
+  current?: (Content & Article) | null
 }) {
-  const router = useRouter();
-  const { q } = router.query;
+  const router = useRouter()
+  const { q } = router.query
 
-  const [searchText, setSearchText] = useState(q || "");
+  const [searchText, setSearchText] = useState(q || '')
   useEffect(() => {
     if (q) {
-      setSearchText(q);
+      setSearchText(q)
     }
-  }, [q]);
+  }, [q])
 
   const getArticlesOfCategory = useCallback(
     (categoryId: string) => {
       return articles.filter(
         (article) => article.category && article.category._id === categoryId
-      );
+      )
     },
     [articles]
-  );
+  )
 
   return (
     <nav className={styles.Nav}>
@@ -63,7 +63,7 @@ export function Navigation({
         />
       ))}
     </nav>
-  );
+  )
 }
 
 function NavigationMenuItem({
@@ -71,17 +71,17 @@ function NavigationMenuItem({
   articles,
   current,
 }: {
-  category: Content & Category;
-  articles: (Content & Article)[];
-  current?: Content & Article;
+  category: Content & Category
+  articles: (Content & Article)[]
+  current?: Content & Article
 }) {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false)
 
   useEffect(() => {
     if (current && category && current.category._id === category._id) {
-      setIsOpen(true);
+      setIsOpen(true)
     }
-  }, [current, category]);
+  }, [current, category])
 
   return (
     <dl className={styles.Nav_Contents}>
@@ -121,5 +121,5 @@ function NavigationMenuItem({
         </dd>
       )}
     </dl>
-  );
+  )
 }

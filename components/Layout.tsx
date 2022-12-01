@@ -1,12 +1,12 @@
-import { AppMeta, Content } from "newt-client-js";
-import { PropsWithChildren } from "react";
-import styles from "../styles/Layout.module.css";
-import { Article } from "../types/article";
-import { Category } from "../types/category";
-import { Badge } from "./Badge";
-import { Footer } from "./Footer";
-import { Header } from "./Header";
-import { Navigation } from "./Navigation";
+import { AppMeta, Content } from 'newt-client-js'
+import { PropsWithChildren } from 'react'
+import styles from '../styles/Layout.module.css'
+import { Article } from '../types/article'
+import { Category } from '../types/category'
+import { Badge } from './Badge'
+import { Footer } from './Footer'
+import { Header } from './Header'
+import { Navigation } from './Navigation'
 
 export function Layout({
   app,
@@ -15,10 +15,10 @@ export function Layout({
   currentArticle,
   children,
 }: PropsWithChildren<{
-  app: AppMeta;
-  categories: (Content & Category)[];
-  articles: (Content & Article)[];
-  currentArticle?: (Content & Article) | null;
+  app: AppMeta
+  categories: (Content & Category)[]
+  articles: (Content & Article)[]
+  currentArticle?: (Content & Article) | null
 }>): JSX.Element {
   return (
     <div className={styles.Wrapper}>
@@ -34,5 +34,5 @@ export function Layout({
       <Footer app={app} />
       <Badge />
     </div>
-  );
+  )
 }

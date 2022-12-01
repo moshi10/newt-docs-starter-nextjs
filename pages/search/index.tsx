@@ -1,59 +1,59 @@
-import styles from "../../styles/Search.module.css";
-import { AppMeta, Content } from "newt-client-js";
-import Head from "next/head";
-import Link from "next/link";
-import { useRouter } from "next/router";
-import { useEffect, useMemo, useState } from "react";
-import { Layout } from "../../components/Layout";
-import { fetchApp, fetchCategories, fetchArticles } from "../../lib/api";
-import { Article } from "../../types/article";
-import { Category } from "../../types/category";
-import { htmlToText } from "html-to-text";
+import styles from '../../styles/Search.module.css'
+import { AppMeta, Content } from 'newt-client-js'
+import Head from 'next/head'
+import Link from 'next/link'
+import { useRouter } from 'next/router'
+import { useEffect, useMemo, useState } from 'react'
+import { Layout } from '../../components/Layout'
+import { fetchApp, fetchCategories, fetchArticles } from '../../lib/api'
+import { Article } from '../../types/article'
+import { Category } from '../../types/category'
+import { htmlToText } from 'html-to-text'
 
 export default function Search({
   app,
   categories,
   articles,
 }: {
-  app: AppMeta;
-  categories: (Content & Category)[];
-  articles: (Content & Article)[];
+  app: AppMeta
+  categories: (Content & Category)[]
+  articles: (Content & Article)[]
 }) {
-  const router = useRouter();
-  const { q, page } = router.query;
+  const router = useRouter()
+  const { q, page } = router.query
 
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false)
   const [searchResults, setSearchedResults] = useState<(Content & Article)[]>(
     []
-  );
-  const [total, setTotal] = useState<number>(0);
+  )
+  const [total, setTotal] = useState<number>(0)
 
   const _page = useMemo(() => {
-    return Number(page) || 1;
-  }, [page]);
+    return Number(page) || 1
+  }, [page])
 
   useEffect(() => {
-    (async () => {
-      if (typeof q !== "string" || q === "") {
-        return;
+    ;(async () => {
+      if (typeof q !== 'string' || q === '') {
+        return
       }
-      setIsLoading(true);
+      setIsLoading(true)
       const { articles, total } = await fetchArticles({
         search: q,
         page: _page,
         limit: 100,
-        format: "text",
-      });
-      setSearchedResults(articles);
-      setTotal(total);
-      setIsLoading(false);
-    })();
-  }, [q, _page, router]);
+        format: 'text',
+      })
+      setSearchedResults(articles)
+      setTotal(total)
+      setIsLoading(false)
+    })()
+  }, [q, _page, router])
 
   return (
     <Layout app={app} categories={categories} articles={articles}>
       <Head>
-        <title>{app?.name || app?.uid || ""}</title>
+        <title>{app?.name || app?.uid || ''}</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className={styles.SearchResult}>
@@ -83,23 +83,23 @@ export default function Search({
         )}
       </div>
     </Layout>
-  );
+  )
 }
 
 export async function getStaticProps() {
-  const app = await fetchApp();
-  const categories = await fetchCategories();
+  const app = await fetchApp()
+  const categories = await fetchCategories()
   if (categories.length === 0) {
     return {
       notFound: true,
-    };
+    }
   }
-  const { articles } = await fetchArticles();
+  const { articles } = await fetchArticles()
   return {
     props: {
       app,
       articles,
       categories,
     },
-  };
+  }
 }
