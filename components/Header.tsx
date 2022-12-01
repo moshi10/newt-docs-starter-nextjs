@@ -1,6 +1,6 @@
-import { AppMeta } from "newt-client-js";
-import Link from "next/link";
-import styles from "../styles/Header.module.css";
+import { AppMeta } from 'newt-client-js'
+import Link from 'next/link'
+import styles from '../styles/Header.module.css'
 
 export function Header({ app }: { app: AppMeta }): JSX.Element {
   return (
@@ -8,15 +8,15 @@ export function Header({ app }: { app: AppMeta }): JSX.Element {
       <div className={styles.Header_Inner}>
         <Link href="/">
           <a href="#" className={styles.Title}>
-            {app.icon?.type === "emoji" && (
+            {app.icon?.type === 'emoji' && (
               <span className={styles.Title_Icon}>{app.icon.value}</span>
             )}
-            {app.icon?.type === "image" && (
+            {app.icon?.type === 'image' && (
               <span className={styles.Title_Icon}>
                 <img src={app.icon.value} alt="" />
               </span>
             )}
-            <div className={styles.Title_Text}>{app.name || app.uid || ""}</div>
+            <div className={styles.Title_Text}>{app.name || app.uid || ''}</div>
           </a>
         </Link>
         <div className={styles.Link}>
@@ -30,5 +30,5 @@ export function Header({ app }: { app: AppMeta }): JSX.Element {
         </div>
       </div>
     </header>
-  );
+  )
 }

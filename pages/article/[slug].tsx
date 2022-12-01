@@ -1,17 +1,17 @@
-import { AppMeta, Content } from "newt-client-js";
-import styles from "../../styles/Article.module.css";
-import Head from "next/head";
-import { useMemo } from "react";
-import { Layout } from "../../components/Layout";
+import { AppMeta, Content } from 'newt-client-js'
+import styles from '../../styles/Article.module.css'
+import Head from 'next/head'
+import { useMemo } from 'react'
+import { Layout } from '../../components/Layout'
 import {
   fetchApp,
   fetchArticles,
   fetchCategories,
   fetchCurrentArticle,
-} from "../../lib/api";
-import { Article } from "../../types/article";
-import { htmlToText } from "html-to-text";
-import { Category } from "../../types/category";
+} from '../../lib/api'
+import { Article } from '../../types/article'
+import { htmlToText } from 'html-to-text'
+import { Category } from '../../types/category'
 
 export default function ArticlePage({
   app,
@@ -19,57 +19,57 @@ export default function ArticlePage({
   articles,
   currentArticle,
 }: {
-  app: AppMeta;
-  categories: (Content & Category)[];
-  articles: (Content & Article)[];
-  currentArticle: (Content & Article) | null;
+  app: AppMeta
+  categories: (Content & Category)[]
+  articles: (Content & Article)[]
+  currentArticle: (Content & Article) | null
 }) {
   const meta = useMemo(() => {
     if (currentArticle?.meta) {
-      return currentArticle.meta;
+      return currentArticle.meta
     }
-    return null;
-  }, [currentArticle]);
+    return null
+  }, [currentArticle])
 
   const title = useMemo(() => {
     if (meta?.title) {
-      return meta.title;
+      return meta.title
     }
     if (currentArticle?.title) {
-      return currentArticle.title;
+      return currentArticle.title
     }
-    return app.name || app.uid || "";
-  }, [app, meta, currentArticle?.title]);
+    return app.name || app.uid || ''
+  }, [app, meta, currentArticle?.title])
 
   const description = useMemo(() => {
     if (meta?.description) {
-      return meta.description;
+      return meta.description
     }
     if (currentArticle?.body) {
       return htmlToText(currentArticle.body, {
-        selectors: [{ selector: "img", format: "skip" }],
-      }).slice(0, 200);
+        selectors: [{ selector: 'img', format: 'skip' }],
+      }).slice(0, 200)
     }
-    return "";
-  }, [meta, currentArticle?.body]);
+    return ''
+  }, [meta, currentArticle?.body])
 
   const ogImage = useMemo(() => {
     if (meta?.ogImage?.src) {
-      return meta.ogImage.src;
+      return meta.ogImage.src
     }
-    return "";
-  }, [meta]);
+    return ''
+  }, [meta])
 
   const body = useMemo(() => {
     if (currentArticle?.body) {
       return {
         __html: currentArticle.body,
-      };
+      }
     }
     return {
-      __html: "",
-    };
-  }, [currentArticle?.body]);
+      __html: '',
+    }
+  }, [currentArticle?.body])
 
   return (
     <Layout
@@ -89,22 +89,22 @@ export default function ArticlePage({
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <article className={styles.Article}>
-        <h1 className={styles.Article_Title}>{currentArticle?.title || ""}</h1>
+        <h1 className={styles.Article_Title}>{currentArticle?.title || ''}</h1>
         <div
           className={styles.Article_Body}
           dangerouslySetInnerHTML={body}
         ></div>
       </article>
     </Layout>
-  );
+  )
 }
 
 export async function getStaticProps({ params }: { params: { slug: string } }) {
-  const { slug } = params;
-  const app = await fetchApp();
-  const categories = await fetchCategories();
-  const { articles } = await fetchArticles();
-  const currentArticle = await fetchCurrentArticle({ slug });
+  const { slug } = params
+  const app = await fetchApp()
+  const categories = await fetchCategories()
+  const { articles } = await fetchArticles()
+  const currentArticle = await fetchCurrentArticle({ slug })
   return {
     props: {
       app,
@@ -112,19 +112,19 @@ export async function getStaticProps({ params }: { params: { slug: string } }) {
       articles,
       currentArticle,
     },
-  };
+  }
 }
 
 export async function getStaticPaths() {
   const { articles } = await fetchArticles({
     limit: 1000,
-  });
+  })
   return {
     paths: articles.map((article) => ({
       params: {
         slug: article.slug,
       },
     })),
-    fallback: "blocking",
-  };
+    fallback: 'blocking',
+  }
 }
